@@ -138,30 +138,29 @@ public class CheckRunner implements Runnable {
                 if (isStillOk(lastState, currentState)) {
                     continue;
                 }
-				
+
 		if (currentState.toString().compareTo("WARN") == 0 ||currentState.toString().compareTo("ERROR") == 0) {
-				    if (dbo.get("errorTimeStamp") != null) {
-		              DateTime err_ts = new DateTime(dbo.get("errorTimeStamp"));
-		              DateTime lastCheck = check.getLastCheck();
-                      if(lastCheck!=null) {
-                          int   diff  =  Seconds.secondsBetween(err_ts,lastCheck).getSeconds()/(60);
-                          diff += 1;
-		                  mongo.getCollection("checks").update(dbo,new BasicDBObject("$set",new BasicDBObject("diff",diff)));
-                          int timeThreshold = check.getTimeThreshold().intValue();
-                          if(diff < timeThreshold) {
-                               continue;
-                        }
-                      }
-                    } else {
+                          if (dbo.get("errorTimeStamp") != null) {
+                              DateTime err_ts = new DateTime(dbo.get("errorTimeStamp"));
+                              DateTime lastCheck = check.getLastCheck();
+                              if(lastCheck != null) {
+                                        int   diff  =  Seconds.secondsBetween(err_ts,lastCheck).getSeconds()/(60);
+                                        diff += 1;                                      
+                                        int timeThreshold = check.getTimeThreshold().intValue();
+                                        if(diff < timeThreshold) {
+                                             continue;
+                                        }
+                               }
+                        } else {
 					    continue;
-					}
 				}
+                }
                 Alert alert = createAlert(target, currentValue, warn, error, lastState, currentState, now);
 
                 alertsStore.createAlert(check.getId(), alert);
 
                 if (stateIsTheSame(lastState, currentState)) {
-                         continue;
+                    continue;
                 }
 
                 interestingAlerts.add(alert);
@@ -189,7 +188,6 @@ public class CheckRunner implements Runnable {
                     }
                 }
             }
-
         } catch (Exception e) {
             LOGGER.warn("{} failed", check.getName(), e);
         }
@@ -213,5 +211,4 @@ public class CheckRunner implements Runnable {
                 .withToType(to)
                 .withTimestamp(now);
     }
-
 }

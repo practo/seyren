@@ -187,16 +187,13 @@ public class MongoStore implements ChecksStore, AlertsStore, SubscriptionsStore 
         query.put("state", new BasicDBObject("$nin", models));
         DBObject dbo = getChecksCollection().findOne(query);
 
-        if(check.getState().toString().compareTo("OK") !=0){
-             if(dbo.get("errorTimeStamp") ==null){
+        if(check.getState().toString().compareTo("WARN") == 0 || check.getState().toString().compareTo("ERROR") == 0 ){
+             if(dbo.get("errorTimeStamp") == null){
                         getChecksCollection().update(findObject,new BasicDBObject("$set",new BasicDBObject("errorTimeStamp",dbo.get("lastCheck"))));
         }
            }
         else {
                getChecksCollection().update(findObject,new BasicDBObject("$unset",new BasicDBObject("errorTimeStamp",new BasicDBObject("$exists",true))));
-               //For Debugging info
-               //getChecksCollection().update(findObject,new BasicDBObject("$unset",new BasicDBObject("diff",new BasicDBObject("$exists",true))));
-
              }
 
         return check;

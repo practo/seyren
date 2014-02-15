@@ -75,7 +75,7 @@ public class Check {
         setName(name);
         return this;
     }
-    
+
     public String getDescription() {
         return description;
     }
@@ -176,7 +176,7 @@ public class Check {
     public AlertType getState() {
         return state;
     }
-    
+
     public void setState(AlertType state) {
         this.state = state;
     }
@@ -185,11 +185,11 @@ public class Check {
     public DateTime getLastCheck() {
         return lastCheck;
     }
-    
+
     public void setLastCheck(DateTime lastCheck) {
         this.lastCheck = lastCheck;
     }
-    
+
     public Check withLastCheck(DateTime lastCheck) {
         setLastCheck(lastCheck);
         return this;
@@ -199,12 +199,11 @@ public class Check {
         setState(state);
         return this;
     }
-    
 
     public List<Subscription> getSubscriptions() {
         return subscriptions;
     }
-    
+
     public void setSubscriptions(List<Subscription> subscriptions) {
         this.subscriptions = subscriptions;
     }
@@ -213,5 +212,5 @@ public class Check {
         setSubscriptions(subscriptions);
         return this;
     }
-    
+
 }
